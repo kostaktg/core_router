@@ -15,13 +15,6 @@ class BaseController extends Controller{
         parent::__construct($this->action, $_GET);
         $this->defaultSettings();
         session_start();
-
-        // var_dump(ROOT_DIR);
-        // exit;
-        // if(!isset($_SESSION['log_in'])){
-        //     header("Location: ".ROOT_DIR);
-        // }
-
     }
 
     protected function defaultSettings(){

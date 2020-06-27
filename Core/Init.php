@@ -38,18 +38,17 @@ class Init{
                     $controller->executeAction();
                 } else {
                     //Method does not exist
-                    echo '<h1>Method does not exists</h1>';
-                    return;
+                    $this->error();
+
                 }
             } else {
                 // Base controller not found
-                echo '<h1>Base controller does not found or does not Extended</h1>';
-                return;
+                $this->error();
             }
         } else {
             // Controller Class Does Not Exist
-            echo '<h1>Controller class does not exist</h1>';
-            return;
+            $this->error();
+
         }
 
     }
@@ -67,11 +66,18 @@ class Init{
         }
         //default action
         if($this->router->action == ""){
-            $this->action = 'read';
+            $this->action = 'index';
         } else {
             // init action
             $this->action = $this->router->action;
         }
+    }
+
+    protected function error(){
+        $this->router->controller = FRONTEND_CONTROLLER_DIR.'\Error404Controller';
+        $this->router->action= 'Error';
+        $controller = new $this->router->controller('Error', $this->request);
+        $controller->executeAction();
     }
 
 

@@ -1,12 +1,11 @@
 <?php 
 use Core\Router;
 
-Router::set('home', 'Home', null,  function(){
-    echo 'homeVIEW';
-});
+Router::set('/home', 'Home');
+Router::set('/', 'Home');
 
+Router::set('/five-factors', 'FiveFactors');
+Router::set('/five-factors', 'FiveFactors', 'show', ':slug');
 
-Router::set('about', 'Home', null,  function(){
-    echo 'home';
-});
+Router::set('/about', 'Home', 'create');
 

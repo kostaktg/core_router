@@ -17,12 +17,19 @@ class Router {
     }
 
 
-    public static function set($route, $controller=null, $action=null, $function){
+    public static function set($route, $controller=null, $action=null, $slug=null, $function=null){
         self::$validRoutes[] = $route;
 
-       
-        if(isset($_GET['url']) && $_GET['url'] === $route){
-            $function->__invoke();
+        $url=explode('/',$_GET['url']??null);
+        if(isset($url[1]) && $url[1]==='')unset($url[1]);
+        if(isset($url[0]) &&  ltrim($url[0], '/') === ltrim($route , '/')){
+
+
+            $url[0] = rtrim($url[0], '/');
+
+            // if(isset($function)){
+            //     $function->__invoke();
+            // }
             /** Controoler */
             if(isset($controller)){
                 self::$contr = ucfirst($controller).'Controller';
@@ -30,14 +37,20 @@ class Router {
                 self::$contr = 'HomeController';
             }
             /** Action */
-            if(isset($action)){
+            if(isset($action) && isset($url[1]) && $action==$url[1]){
+                self::$act = ucfirst($action);
+            } elseif(isset($action) && isset($url[1]) && isset($slug) && $slug ==':slug' && $action!=$url[1]){
                 self::$act = ucfirst($action);
             } else {
-                self::$act = 'Index';
+                self::$act = 'index';
             }
 
         } 
 
+        if(!isset($url[0])){
+            self::$contr = 'HomeController';
+            self::$act = 'index';
+        }
     }
 
 
@@ -60,11 +73,6 @@ class Router {
         $this->controller   = self::$contr;
         $this->action       = self::$act;
     }
-
-
-
-
-
 
 
 }
